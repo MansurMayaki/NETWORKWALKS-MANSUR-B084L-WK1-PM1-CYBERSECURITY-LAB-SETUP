@@ -67,6 +67,8 @@ It can be used for activities such as:
 
 ---
 
+<img src="./Kali%20title.png" width="700">
+
 ## 🏗️ Lab Architecture
 
 ### 1. Kali Linux Home
@@ -97,21 +99,14 @@ Additional target machines can be added to the same virtual network in future pr
 
 # 🪜 Lab Setup Procedure
 
-## Step 1. Install 7-Zip
 
-7-Zip was installed to extract the Kali Linux virtual-machine package, which may be distributed as a `.7z` archive.
-
-**Tool:** 7-Zip
-
----
-
-## Step 2. Install VirtualBox
+## Step 1. Install VirtualBox
 
 VirtualBox was installed as the hypervisor.
 
 ---
 
-## Step 3. Create the NAT Network
+## Step 2. Create the NAT Network
 
 A dedicated NAT Network was created in VirtualBox.
 
@@ -121,7 +116,7 @@ IPv4 Prefix:  10.0.0.0/24
 DHCP:         Enabled
 IPv6:         Disabled
 
-![](2-screenshot-network-settings-1.png)
+<img src="./Kali%20Network%20Settings.png" width="700">
 
 A **NAT Network** was selected because multiple virtual machines connected to the same NAT Network can communicate with one another while also having outbound network connectivity.
 
@@ -142,14 +137,13 @@ Attached to: NAT Network
 Network:     NatNetwork
 Adapter Type: Intel PRO/1000 MT Desktop
 ```
+<img src="./Kali%20Settings%20Page.png" width="700">
 
 The VM was allocated:
 
 ```text
 RAM: 2048 MB
 ```
-![](3-screenshot-kali-linux.png)
-A shared folder was also configured for transferring required files between the host operating system and the Kali VM.
 
 
 
@@ -170,7 +164,7 @@ DNS: 8.8.8.8
 
 A consistent IP address makes it easier to document the lab and reference the Kali machine in future exercises.
 
-![](4-screenshot-kali-network-settings.png)
+<img src="./Kali%20VBox%20Network%20Settings%20SC.png" width="700">
 
 ---
 
@@ -183,6 +177,7 @@ Example snapshot name:
 ```text
 Clean Kali - Network Setup
 ```
+<img src="./Kali%20Vbox%20MAchine.png" width="700">
 
 The snapshot represents the clean baseline of the laboratory.
 
@@ -217,77 +212,120 @@ DNS:
 
 ---
 
-# 🐞 Problems Encountered & Solutions
 
-Documenting problems is an important part of the project.
+# Problems Encountered and Solutions
 
-## Problem 1. Internet Connectivity After Static IP Configuration
+Documenting problems is an important part of the project. During the setup of the Cyber Security and Ethical Hacking lab, several configuration and access issues may arise while preparing the Kali Linux virtual machine and its networking environment.
 
-After manually configuring the IPv4 settings, Internet connectivity may fail depending on the Kali/NetworkManager configuration.
+## Problem 1. Distinguishing Physical Kali Linux from Virtual Kali Linux
 
-One workaround used during this lab was:
+My computer already had Kali Linux installed directly on the hardware (bare metal). However, the lab instructions required VirtualBox to create and configure a virtual machine.
 
-```bash
-sudo nmcli connection modify "Wired connection 1" ipv4.dad-timeout 0
-```
+This required distinguishing between the existing physical Kali installation and the separate Kali virtual machine used for the lab.
 
-The network connection was then restarted/rebooted and connectivity was tested again.
+**Solution:**
 
-> **Important:** Network interface and connection names may differ between systems. Students should first identify their actual connection name before running an `nmcli` command.
+1. Kept the existing bare-metal Kali Linux installation intact.
+2. Installed VirtualBox to support virtual machine management.
+3. Downloaded and opened the Kali Linux VirtualBox image.
+4. Used the virtual machine for the VirtualBox-specific lab tasks.
+
+This allowed me to retain my existing operating system while preparing a dedicated virtual environment for cybersecurity practice.
 
 ---
 
-## Problem 2. VirtualBox VT-x / Virtualization Error
+## Problem 2. Kali Linux Virtual Machine Login
 
-The VM initially failed to start because hardware virtualization was disabled in the system firmware/BIOS.
+After opening the Kali Linux virtual machine in VirtualBox, the system displayed a login screen requesting a username and password.
 
-The issue was resolved by:
+The login credentials depended on the type of Kali image downloaded.
 
-1. Restarting the computer.
-2. Entering BIOS/UEFI settings.
-3. Enabling Intel VT-x / hardware virtualization.
-4. Saving the configuration.
-5. Restarting the computer.
-6. Starting the Kali VM again.
+**Solution:**
 
-After enabling virtualization, the VM started successfully.
+For the official pre-built Kali VirtualBox image, I attempted the default credentials:
 
+- **Username:** `kali`
+- **Password:** `kali`
+
+If the credentials were rejected, the next step was to verify the image type and its associated login instructions.
+
+---
+
+## Problem 3. VirtualBox NAT Network Configuration
+
+The lab instructions required a NAT Network using the `10.0.0.0/24` address range.
+
+Configuring the virtual network correctly was necessary to provide the expected network connectivity between participating virtual machines.
+
+**Solution:**
+
+1. Opened VirtualBox's network settings.
+2. Created a NAT Network.
+3. Configured the network CIDR as `10.0.0.0/24`.
+4. Enabled DHCP where required.
+5. Connected the Kali virtual machine to the configured NAT Network.
+6. Verified the VM's IP address and routing information.
+
+The physical Kali host's network configuration was treated separately from the virtual network configuration.
+
+---
+
+## Problem 4. Capturing Screenshots for Lab Documentation
+
+The lab required screenshots as evidence of the configuration and setup process. Since Kali Linux was also installed directly on the physical computer, it was important to distinguish screenshots of the host operating system from screenshots of the virtual machine.
+
+**Solution:**
+
+Used the Kali screenshot utility to capture relevant screens and terminal output.
+
+```bash
+xfce4-screenshooter
+```
+
+For network verification, the following commands were used:
+
+```bash
+ip addr
+ip route
+```
+
+Screenshots were organised into a dedicated folder for easier documentation and submission.
 
 ---
 
 # 💡 What I Learned
 
-Through this project, I learned how to create and configure a virtual environment for cybersecurity practice.
+Through this project, I learned the importance of preparing a suitable virtual environment before performing cybersecurity and ethical hacking exercises.
 
-The most important concepts I learned include:
+### 1. Bare-Metal vs Virtualised Kali Linux
 
-### 1. NAT vs NAT Network
+I learned the difference between running Kali Linux directly on physical hardware and running it as a virtual machine. I also learned that some lab tasks, such as taking VirtualBox snapshots, require a virtual machine.
 
-A standard NAT configuration and a NAT Network serve different purposes.
+### 2. VirtualBox and Virtual Machine Management
 
-A NAT Network allows multiple VMs connected to the same virtual network to communicate with one another while providing network address translation for external connectivity.
+I learned how VirtualBox can be used to create, configure, start, and manage virtual machines for controlled cybersecurity practice.
 
-This makes it useful for building a multi-machine cybersecurity laboratory.
+### 3. Virtual Network Configuration
 
-### 2. Virtual Machine Networking
+I learned the purpose of a NAT Network and how a virtual machine's network adapter, IP address, and routing configuration affect connectivity.
 
-I learned how VirtualBox virtual network adapters connect virtual machines to different types of networks and how network configuration affects communication between machines.
+### 4. IP Address Verification
 
-### 3. Static IP Configuration
+I learned how to use `ip addr` and `ip route` to inspect network interfaces, IP addressing, and routing information in Kali Linux.
 
-I learned how to configure and verify IPv4 addressing, subnet masks, gateways, and DNS settings in Kali Linux.
+### 5. Troubleshooting and Documentation
 
-### 4. VM Snapshots
+I learned the importance of investigating login issues, verifying configuration settings, documenting errors, and capturing screenshots as evidence of completed lab activities.
 
-I learned that a clean snapshot should be created **before performing risky or experimental activities**.
+### 6. Virtual Machine Snapshots
 
-This provides a known-good recovery point for future cybersecurity exercises.
-
-### 5. Documentation
-
-I learned that documenting commands, configuration, screenshots, problems, and solutions is an important part of a professional cybersecurity project.
+I learned that snapshots provide recovery points for virtual machines and are useful before performing potentially disruptive lab exercises.
 
 ---
+
+**Conclusion**
+
+This lab strengthened my understanding of Kali Linux, virtualisation, network configuration, troubleshooting, and technical documentation. These skills provide a foundation for further practical cybersecurity and ethical hacking exercises.
 
 # 🔐 Security & Ethical Use
 
@@ -297,7 +335,7 @@ This laboratory is intended strictly for education purposes only.
 
 # 🔗 Tools & Resources
 
-- **7-Zip:** [https://7-zip.org/download.html](https://7-zip.org/download.html)
+
 - **VirtualBox:** [https://virtualbox.org/wiki/Downloads](https://virtualbox.org/wiki/Downloads)
 - **Kali Linux:** [https://kali.org/get-kali](https://kali.org/get-kali)
 
@@ -305,10 +343,10 @@ This laboratory is intended strictly for education purposes only.
 
 # 👤 Author
 
-**Waqas Karim**\
-Cybersecurity Professional B082
+**Abdulmumin Mansur Mayaki**\
+Cybersecurity Professional B084L
 
-LinkedIn: [https://www.linkedin.com/in/waqaskarim/](https://www.linkedin.com/in/waqaskarim/)
+LinkedIn: [https://t.co/SZek9n4y8I](https://www.linkedin.com/in/mansur-abdulmumin-mayaki-01a78a437)
 
 ---
 
