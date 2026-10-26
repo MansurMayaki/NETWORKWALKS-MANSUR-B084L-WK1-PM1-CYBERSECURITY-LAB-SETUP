@@ -69,8 +69,8 @@ It can be used for activities such as:
 
 ## 🏗️ Lab Architecture
 
-![](Kali-title.png)
-
+### 1. Kali Linux Home
+<img src="./Kali%20Home.png" width="700">
 
 Additional target machines can be added to the same virtual network in future projects.
 
